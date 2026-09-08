@@ -4,8 +4,8 @@ const HTML_CONTENT = `
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Card Tab - 我的导航</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>⭐</text></svg>">
+    <title>我的导航 | MicrossNav</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%234FC3F7'/%3E%3Cstop offset='0.55' stop-color='%230A84FF'/%3E%3Cstop offset='1' stop-color='%23A855F7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='3' y='3' width='58' height='58' rx='17' fill='url(%23g)'/%3E%3Ccircle cx='32' cy='32' r='19' fill='none' stroke='white' stroke-opacity='0.5' stroke-width='3' stroke-dasharray='3%207' stroke-linecap='round'/%3E%3Cpath d='M32 13c2.2 12 8.6 18.4 21 21-12.4 2.6-18.8 9-21 21-2.2-12-8.6-18.4-21-21 12.4-2.6 18.8-9 21-21z' fill='white'/%3E%3C/svg%3E">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -14,8 +14,22 @@ const HTML_CONTENT = `
                 extend: {
                     colors: {
                         glass: {
-                            border: 'rgba(255, 255, 255, 0.2)',
+                            border: 'rgba(255, 255, 255, 0.24)',
                             darkBorder: 'rgba(255, 255, 255, 0.1)',
+                        },
+                        // Apple 蓝紫色板：太空 / 未来感主色
+                        apple: {
+                            '50':  '#F0F7FF',
+                            '100': '#DCEBFF',
+                            '200': '#B8D9FF',
+                            '300': '#85BCFF',
+                            '400': '#4E9CFF',
+                            '500': '#0A84FF',
+                            '600': '#006FE0',
+                            '700': '#0A56B8',
+                            '800': '#104392',
+                            '900': '#123168',
+                            '950': '#0A1B42',
                         }
                     },
                     animation: {
@@ -30,8 +44,10 @@ const HTML_CONTENT = `
                         }
                     },
                     boxShadow: {
-                        'glass': '0 4px 30px rgba(0, 0, 0, 0.1)',
-                        'glass-hover': '0 10px 40px rgba(0, 0, 0, 0.2)',
+                        'glass': '0 4px 30px rgba(15, 40, 90, 0.12)',
+                        'glass-hover': '0 14px 44px rgba(15, 40, 90, 0.22)',
+                        'glow-apple': '0 10px 34px -8px rgba(10, 132, 255, 0.55)',
+                        'glass-top': '0 10px 40px -18px rgba(23, 44, 110, 0.28)',
                     }
                 }
             }
@@ -41,7 +57,7 @@ const HTML_CONTENT = `
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: rgba(156, 163, 175, 0.3); border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(156, 163, 175, 0.6); }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(10, 132, 255, 0.55); }
 
         @media (max-width: 640px) {
             ::-webkit-scrollbar { display: none; }
@@ -51,8 +67,8 @@ const HTML_CONTENT = `
         .card.dragging {
             opacity: 0.8;
             transform: scale(1.05);
-            border: 2px dashed #10b981;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border: 2px dashed rgba(10, 132, 255, 0.9);
+            box-shadow: 0 20px 30px -8px rgba(10, 132, 255, 0.25), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
             z-index: 50;
             position: relative;
         }
@@ -139,6 +155,223 @@ const HTML_CONTENT = `
             transition: opacity 0.1s ease-in-out;
         }
     </style>
+    <style>
+        /* ================================================================
+           Apple Glass UI — 太空 / 未来感视觉体系
+           ================================================================ */
+        :root {
+            --apple-accent: #0A84FF;
+            --apple-ease: cubic-bezier(.22, 1, .36, 1);
+        }
+        html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; }
+
+        /* ---- 未来感星空背景（日间浅蓝 / 夜间深空） ---- */
+        #cosmic-bg {
+            background:
+                radial-gradient(1400px 900px at 82% -12%, rgba(59, 130, 246, .16), transparent 60%),
+                radial-gradient(1000px 760px at -8% 22%, rgba(168, 85, 247, .10), transparent 55%),
+                radial-gradient(760px 560px at 105% 88%, rgba(6, 182, 212, .08), transparent 60%),
+                linear-gradient(168deg, #eef6ff 0%, #e9f0ff 42%, #f6f2ff 100%);
+        }
+        html.dark #cosmic-bg {
+            background:
+                radial-gradient(1500px 950px at 82% -12%, rgba(37, 99, 235, .30), transparent 58%),
+                radial-gradient(1100px 820px at -10% 18%, rgba(124, 58, 237, .26), transparent 56%),
+                radial-gradient(900px 700px at 100% 100%, rgba(8, 145, 178, .16), transparent 62%),
+                linear-gradient(160deg, #02040f 0%, #060b26 42%, #101640 72%, #0a0f30 100%);
+        }
+        /* 星空闪烁 */
+        #cosmic-bg::before,
+        #cosmic-bg::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: .55;
+            animation: cosmic-twinkle 4.5s var(--apple-ease) infinite alternate;
+        }
+        #cosmic-bg::before {
+            background-image:
+                radial-gradient(1.4px 1.4px at 24px 34px, rgba(255, 255, 255, .95), transparent 100%),
+                radial-gradient(1px 1px at 148px 96px, rgba(255, 255, 255, .8), transparent 100%),
+                radial-gradient(1.7px 1.7px at 88px 178px, rgba(190, 215, 255, .9), transparent 100%),
+                radial-gradient(1px 1px at 232px 52px, rgba(255, 255, 255, .7), transparent 100%),
+                radial-gradient(1.2px 1.2px at 196px 150px, rgba(255, 255, 255, .85), transparent 100%);
+            background-size: 260px 220px, 320px 260px, 280px 240px, 260px 220px, 320px 280px;
+        }
+        #cosmic-bg::after {
+            opacity: .35;
+            animation-delay: 1.6s;
+            background-image:
+                radial-gradient(1px 1px at 60px 120px, rgba(148, 187, 255, .9), transparent 100%),
+                radial-gradient(1.3px 1.3px at 200px 210px, rgba(255, 255, 255, .7), transparent 100%),
+                radial-gradient(1px 1px at 120px 40px, rgba(200, 170, 255, .8), transparent 100%);
+            background-size: 340px 260px, 300px 320px, 320px 240px;
+        }
+        html:not(.dark) #cosmic-bg::before,
+        html:not(.dark) #cosmic-bg::after { opacity: .13; animation: none; }
+        @keyframes cosmic-twinkle { from { opacity: .25; } to { opacity: .9; } }
+
+        /* ---- 顶部导航毛玻璃 ---- */
+        .app-navbar {
+            border-bottom: 1px solid rgba(255, 255, 255, .55);
+            background: linear-gradient(180deg, rgba(255, 255, 255, .74), rgba(255, 255, 255, .44));
+            -webkit-backdrop-filter: blur(28px) saturate(190%);
+            backdrop-filter: blur(28px) saturate(190%);
+            box-shadow: 0 10px 40px -18px rgba(23, 44, 110, .28);
+        }
+        html.dark .app-navbar {
+            background: linear-gradient(180deg, rgba(9, 13, 34, .66), rgba(7, 10, 28, .4));
+            border-bottom-color: rgba(255, 255, 255, .07);
+            box-shadow: 0 12px 40px -18px rgba(0, 0, 0, .6);
+        }
+        /* 通用毛玻璃面板 */
+        .app-glass {
+            background: rgba(255, 255, 255, .55);
+            -webkit-backdrop-filter: blur(26px) saturate(180%);
+            backdrop-filter: blur(26px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, .62);
+            box-shadow: 0 8px 32px -12px rgba(23, 44, 110, .18), inset 0 1px 0 rgba(255, 255, 255, .7);
+        }
+        html.dark .app-glass {
+            background: rgba(10, 15, 38, .42);
+            border-color: rgba(255, 255, 255, .09);
+            box-shadow: 0 8px 32px -12px rgba(0, 0, 0, .55), inset 0 1px 0 rgba(255, 255, 255, .05);
+        }
+        /* 搜索框 */
+        .app-search {
+            background: rgba(255, 255, 255, .68);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, .8);
+            box-shadow: 0 2px 12px rgba(23, 44, 110, .08), inset 0 1px 0 rgba(255, 255, 255, .95);
+            transition: box-shadow .3s var(--apple-ease), transform .3s var(--apple-ease), border-color .3s var(--apple-ease);
+        }
+        html.dark .app-search { background: rgba(16, 22, 48, .42); border-color: rgba(255, 255, 255, .16); box-shadow: 0 4px 20px -8px rgba(0, 0, 0, .45), inset 0 1px 0 rgba(255, 255, 255, .08); }
+        .app-search:hover { transform: translateY(-1px); }
+
+        /* ---- 深色模式背景：更深沉的近黑蓝渐变 ---- */
+        html.dark body { background: linear-gradient(135deg, #090a12 0%, #0d0f1e 55%, #0a0d1a 100%) fixed; min-height: 100vh; }
+
+        /* ---- 卡片毛玻璃 ---- */
+        .app-card {
+            background: linear-gradient(180deg, rgba(255, 255, 255, .8), rgba(255, 255, 255, .52));
+            border: 1px solid transparent;
+            -webkit-backdrop-filter: blur(22px) saturate(170%);
+            backdrop-filter: blur(22px) saturate(170%);
+            box-shadow: 0 6px 26px -10px rgba(23, 44, 110, .18), inset 0 1px 0 rgba(255, 255, 255, .9);
+            transition: transform .35s var(--apple-ease), box-shadow .35s var(--apple-ease), background .35s var(--apple-ease), border-color .35s var(--apple-ease);
+        }
+        html.dark .app-card {
+            background: rgba(62, 48, 66, .35);
+            border-color: transparent;
+            box-shadow: none;
+        }
+        .app-card:hover {
+            background: linear-gradient(180deg, rgba(255, 255, 255, .95), rgba(255, 255, 255, .72));
+            border-color: transparent;
+            box-shadow: 0 18px 44px -14px rgba(10, 132, 255, .38), inset 0 1px 0 rgba(255, 255, 255, 1);
+        }
+        html.dark .app-card:hover {
+            background: rgba(75, 58, 80, .35);
+            border-color: transparent;
+            box-shadow: 0 12px 30px -14px rgba(0, 0, 0, .6);
+        }
+
+        /* ---- 分类悬浮胶囊 ---- */
+        .cat-chip {
+            color: #475569;
+            background: rgba(255, 255, 255, .52);
+            border-color: rgba(255, 255, 255, .72);
+            -webkit-backdrop-filter: blur(18px) saturate(160%);
+            backdrop-filter: blur(18px) saturate(160%);
+            box-shadow: 0 3px 16px -6px rgba(23, 44, 110, .22);
+            transition: all .3s var(--apple-ease);
+        }
+        html.dark .cat-chip { color: #e2e8f0; background: rgba(255, 255, 255, .06); border-color: rgba(255, 255, 255, .14); box-shadow: 0 3px 14px -6px rgba(0, 0, 0, .45); }
+        .cat-chip:hover {
+            background: rgba(255, 255, 255, .9);
+            border-color: rgba(125, 180, 255, .8);
+            color: #006FE0;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 22px -8px rgba(10, 132, 255, .45);
+        }
+        html.dark .cat-chip:hover { background: rgba(255, 255, 255, .13); border-color: rgba(126, 170, 255, .6); color: #E0EFFF; transform: translateY(-1px); box-shadow: 0 8px 22px -8px rgba(10, 132, 255, .35); }
+        .cat-chip.active {
+            background: linear-gradient(135deg, #0A84FF 0%, #6E5CE6 100%);
+            border-color: transparent;
+            color: #fff;
+            box-shadow: 0 8px 26px -6px rgba(10, 132, 255, .55);
+        }
+        html.dark .cat-chip.active { color: #fff; }
+
+        /* ---- 分类栏横向滚动：平滑滚动 + 左右渐隐 + 箭头 ---- */
+        #category-buttons-container { scroll-behavior: smooth; }
+        #category-buttons-container::-webkit-scrollbar { display: none; }
+        .cat-scroll-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 26px;
+            height: 26px;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #334155;
+            background: rgba(255, 255, 255, .72);
+            border: 1px solid rgba(255, 255, 255, .8);
+            -webkit-backdrop-filter: blur(12px) saturate(160%);
+            backdrop-filter: blur(12px) saturate(160%);
+            box-shadow: 0 4px 14px -4px rgba(15, 23, 42, .3);
+            cursor: pointer;
+            z-index: 6;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .25s ease, background .2s ease, color .2s ease, transform .15s ease;
+        }
+        .cat-scroll-btn.on { opacity: 1; pointer-events: auto; }
+        .cat-scroll-btn:active { transform: translateY(-50%) scale(.92); }
+        #cat-scroll-prev { left: 4px; }
+        #cat-scroll-next { right: 4px; }
+        .cat-scroll-btn:hover { background: rgba(255, 255, 255, .96); color: #006FE0; }
+        html.dark .cat-scroll-btn {
+            color: #e2e8f0;
+            background: rgba(255, 255, 255, .1);
+            border-color: rgba(255, 255, 255, .18);
+            box-shadow: 0 4px 14px -4px rgba(0, 0, 0, .5);
+        }
+        html.dark .cat-scroll-btn:hover { background: rgba(255, 255, 255, .2); color: #fff; }
+
+        /* ---- 玻璃弹窗 / 下拉面板 ---- */
+        #dialog-box, #password-dialog-box, #custom-alert-box, #custom-confirm-box, #category-dialog-box,
+        #profile-dropdown, #search-engine-menu, #category-select-menu {
+            background-color: rgba(255, 255, 255, .82) !important;
+            -webkit-backdrop-filter: blur(30px) saturate(190%);
+            backdrop-filter: blur(30px) saturate(190%);
+            box-shadow: 0 24px 80px -24px rgba(20, 40, 90, .35), inset 0 1px 0 rgba(255, 255, 255, .9);
+        }
+        #dialog-box, #password-dialog-box, #custom-alert-box, #custom-confirm-box, #category-dialog-box {
+            border-radius: 1.75rem !important;
+        }
+        html.dark #dialog-box, html.dark #password-dialog-box, html.dark #custom-alert-box,
+        html.dark #custom-confirm-box, html.dark #category-dialog-box,
+        html.dark #profile-dropdown, html.dark #search-engine-menu, html.dark #category-select-menu {
+            background-color: rgba(14, 20, 44, .82) !important;
+            box-shadow: 0 24px 80px -20px rgba(0, 0, 0, .7);
+        }
+
+        /* ---- Logo ---- */
+        .logo-badge { filter: drop-shadow(0 6px 16px rgba(10, 132, 255, .5)); }
+        .logo-badge svg { display: block; }
+        .logo-orbit { transform-box: fill-box; transform-origin: center; animation: logo-orbit 9s linear infinite; }
+        @keyframes logo-orbit { to { transform: rotate(360deg); } }
+
+        /* ---- 卡片拖拽 / 其它细节 ---- */
+        .card.dragging { border-color: rgba(10, 132, 255, .7) !important; box-shadow: 0 24px 50px -12px rgba(10, 132, 255, .4) !important; }
+        .drag-placeholder { border-color: rgba(10, 132, 255, .5) !important; }
+    </style>
     <script>
         (function () {
             let isDark;
@@ -156,38 +389,49 @@ const HTML_CONTENT = `
     </script>
 </head>
 
-<body class="min-h-screen font-sans text-slate-800 dark:text-slate-100 selection:bg-emerald-200 dark:selection:bg-emerald-900 transition-colors duration-300">
+<body class="min-h-screen font-sans text-slate-800 dark:text-slate-100 selection:bg-apple-200 dark:selection:bg-apple-900 transition-colors duration-300">
     
-    <!-- 背景层 -->
-    <div class="fixed inset-0 -z-10 h-full w-full overflow-hidden bg-gray-100 dark:bg-[#0f172a]">
-        <div class="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-[#0f172a] dark:to-[#1e293b]"></div>
-        <div class="absolute top-[-10%] left-[-10%] w-[800px] h-[800px] bg-emerald-200/30 dark:bg-indigo-900/20 rounded-full blur-[150px] mix-blend-multiply dark:mix-blend-screen animate-blob"></div>
-        <div class="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-blue-200/30 dark:bg-purple-900/20 rounded-full blur-[120px] mix-blend-multiply dark:mix-blend-screen animate-blob animation-delay-2000"></div>
+    <!-- 背景层：未来感星空 -->
+    <div id="cosmic-bg" class="fixed inset-0 -z-10 h-full w-full overflow-hidden">
+        <div class="absolute top-[-12%] left-[-10%] w-[46rem] h-[46rem] rounded-full bg-apple-300/30 dark:bg-indigo-600/25 blur-[140px] mix-blend-multiply dark:mix-blend-screen animate-blob"></div>
+        <div class="absolute bottom-[-15%] right-[-12%] w-[36rem] h-[36rem] rounded-full bg-violet-400/20 dark:bg-purple-800/25 blur-[130px] mix-blend-multiply dark:mix-blend-screen animate-blob animation-delay-2000"></div>
+        <div class="absolute top-[35%] right-[16%] w-[24rem] h-[24rem] rounded-full bg-cyan-300/25 dark:bg-cyan-700/20 blur-[120px] mix-blend-screen animate-blob animation-delay-4000"></div>
     </div>
 
     <!-- 顶部固定导航 -->
     <div class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
-        <div class="backdrop-blur-xl bg-gray-100/60 dark:bg-[#0f172a]/60 border-b border-slate-200/40 dark:border-slate-700/40 shadow-sm supports-[backdrop-filter]:bg-gray-100/70">
+        <div class="app-navbar">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center justify-between h-16 gap-4">
                     
                     <!-- Logo -->
-                    <a class="flex items-center gap-2 flex-shrink-0 group cursor-pointer bg-white/50 dark:bg-transparent hover:bg-white dark:hover:bg-slate-800 px-3 py-1.5 rounded-xl border border-slate-200/50 dark:border-transparent transition-all duration-300 hover:shadow-md hover:shadow-emerald-500/10 hover:-translate-y-0.5" href="#" onclick="location.reload()">
-                        <div class="w-8 h-8 flex items-center justify-center bg-gradient-to-tr from-emerald-500 to-teal-600 rounded-lg text-white shadow-lg shadow-emerald-500/30 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                            </svg>
-                        </div>
-                        <span class="font-bold text-lg tracking-wide text-slate-700 dark:text-slate-100 hidden sm:block">我的导航</span>
+                    <a class="logo-badge group flex items-center gap-2.5 flex-shrink-0 cursor-pointer px-2 py-1 rounded-2xl transition-all duration-300 hover:-translate-y-0.5 active:scale-95" href="#" onclick="location.reload()" aria-label="返回首页">
+                        <svg viewBox="0 0 48 48" class="w-9 h-9 sm:w-10 sm:h-10">
+                            <defs>
+                                <linearGradient id="lg-main" x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0" stop-color="#5AC8FA"/>
+                                    <stop offset="0.5" stop-color="#0A84FF"/>
+                                    <stop offset="1" stop-color="#BF5AF2"/>
+                                </linearGradient>
+                            </defs>
+                            <rect x="1.5" y="1.5" width="45" height="45" rx="14" fill="url(#lg-main)"/>
+                            <rect x="1.5" y="1.5" width="45" height="45" rx="14" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
+                            <g class="logo-orbit">
+                                <circle cx="24" cy="24" r="15.5" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="1.3" stroke-dasharray="3 7" stroke-linecap="round"/>
+                                <circle cx="39.5" cy="24" r="1.8" fill="#fff"/>
+                            </g>
+                            <path d="M24 4 C25.6 13.6 34.4 22.4 44 24 C34.4 25.6 25.6 34.4 24 44 C22.4 34.4 13.6 25.6 4 24 C13.6 22.4 22.4 13.6 24 4 Z" fill="#fff"/>
+                        </svg>
+                        <span class="font-bold text-lg tracking-wide bg-gradient-to-r from-apple-500 to-indigo-500 dark:from-sky-300 dark:to-indigo-300 bg-clip-text text-transparent hidden sm:block">我的导航</span>
                     </a>
 
                     <!-- Search Bar -->
                     <div class="flex-1 max-w-2xl mx-auto">
-                        <div class="relative flex items-center w-full h-10 rounded-xl focus-within:ring-2 focus-within:ring-emerald-500/50 focus-within:shadow-lg focus-within:-translate-y-0.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 shadow-sm hover:shadow-lg transition-all duration-300">
+                        <div class="app-search relative flex items-center w-full h-10 rounded-2xl focus-within:ring-2 focus-within:ring-apple-400/50 focus-within:-translate-y-0.5">
                             
                             <!-- Custom Search Engine Dropdown -->
                             <div class="relative h-full" id="search-engine-wrapper">
-                                <button id="search-engine-btn" class="h-full pl-3 pr-2 flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300 hover:text-emerald-500 hover:bg-slate-50 dark:hover:bg-slate-700/50 rounded-l-xl transition-colors outline-none w-auto md:min-w-[5.5rem]">
+                                <button id="search-engine-btn" class="h-full pl-3 pr-2 flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300 hover:text-apple-500 hover:bg-slate-50 dark:hover:bg-slate-700/50 rounded-l-xl transition-colors outline-none w-auto md:min-w-[5.5rem]">
                                     <!-- 默认显示本站图标 -->
                                     <span id="current-engine-icon" class="flex-shrink-0 w-5 h-5 flex items-center justify-center">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
@@ -213,7 +457,7 @@ const HTML_CONTENT = `
                                 <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"></path></svg>
                             </button>
                             
-                            <button id="search-button" class="h-full px-4 rounded-r-xl text-slate-500 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-slate-700/50 transition-colors border-l border-transparent dark:border-slate-700/50 flex items-center justify-center">
+                            <button id="search-button" class="h-full px-4 rounded-r-xl text-slate-500 dark:text-slate-300 hover:text-apple-600 dark:hover:text-apple-400 hover:bg-apple-50 dark:hover:bg-slate-700/50 transition-colors border-l border-transparent dark:border-slate-700/50 flex items-center justify-center">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                             </button>
                         </div>
@@ -233,7 +477,7 @@ const HTML_CONTENT = `
                             <div id="profile-dropdown" class="hidden absolute right-0 mt-2 w-60 bg-white dark:bg-[#1e293b] rounded-xl shadow-xl ring-1 ring-black/5 dark:ring-white/10 overflow-hidden transform origin-top-right transition-all z-50 dropdown-enter">
                                 <div class="p-2 space-y-1">
                                     <!-- Edit Mode -->
-                                    <button id="edit-mode-btn" onclick="toggleEditMode()" class="w-full text-left px-3 py-2.5 rounded-lg text-sm text-slate-700 dark:text-slate-200 hover:bg-emerald-50 dark:hover:bg-slate-700/50 hover:text-emerald-600 transition-colors flex items-center gap-3 font-medium">
+                                    <button id="edit-mode-btn" onclick="toggleEditMode()" class="w-full text-left px-3 py-2.5 rounded-lg text-sm text-slate-700 dark:text-slate-200 hover:bg-apple-50 dark:hover:bg-slate-700/50 hover:text-apple-600 transition-colors flex items-center gap-3 font-medium">
                                         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                                         编辑模式
                                     </button>
@@ -265,7 +509,7 @@ const HTML_CONTENT = `
                                         </span>
                                         <label class="relative inline-flex items-center cursor-pointer">
                                             <input type="checkbox" id="layout-switch-checkbox" onchange="toggleAppLayout()" class="sr-only peer">
-                                            <div class="w-9 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-emerald-500"></div>
+                                            <div class="w-9 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-apple-500"></div>
                                         </label>
                                     </div>
                                     
@@ -276,7 +520,7 @@ const HTML_CONTENT = `
                                         </span>
                                         <label class="relative inline-flex items-center cursor-pointer">
                                             <input type="checkbox" id="theme-switch-checkbox" class="sr-only peer">
-                                            <div class="w-9 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-emerald-500"></div>
+                                            <div class="w-9 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-apple-500"></div>
                                         </label>
                                     </div>
                                     <div class="px-3 py-2.5 flex items-center justify-between text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700/30 rounded-lg group">
@@ -286,7 +530,7 @@ const HTML_CONTENT = `
                                         </span>
                                         <label class="relative inline-flex items-center cursor-pointer">
                                             <input type="checkbox" id="save-preference-checkbox" class="sr-only peer">
-                                            <div class="w-9 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-emerald-500"></div>
+                                            <div class="w-9 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-apple-500"></div>
                                         </label>
                                     </div>
                                     <div class="h-px bg-slate-100 dark:bg-slate-700/50 mx-1 my-1"></div>
@@ -300,9 +544,17 @@ const HTML_CONTENT = `
                     </div>
                 </div>
                 
-                <!-- 快捷分类栏 -->
-                <div id="category-buttons-container" class="py-2 flex gap-2 overflow-x-auto no-scrollbar mask-gradient items-center">
-                    <!-- JS 生成按钮 -->
+                <!-- 快捷分类栏：单行横向滚动 + 渐隐 + 左右箭头 -->
+                <div class="relative">
+                    <div id="category-buttons-container" class="py-2 flex gap-2 overflow-x-auto no-scrollbar items-center">
+                        <!-- JS 生成按钮 -->
+                    </div>
+                    <button id="cat-scroll-prev" class="cat-scroll-btn" type="button" aria-label="查看前面的分类">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    </button>
+                    <button id="cat-scroll-next" class="cat-scroll-btn" type="button" aria-label="查看更多分类">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </button>
                 </div>
             </div>
         </div>
@@ -312,8 +564,8 @@ const HTML_CONTENT = `
     <main class="pt-36 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-screen">
         <!-- 添加分类按钮 (仅编辑模式显示) -->
         <div id="add-category-container" class="hidden mt-12 mb-8">
-            <button onclick="addCategory()" class="w-full py-4 rounded-2xl border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:border-emerald-500 hover:text-emerald-600 dark:hover:border-emerald-500 dark:hover:text-emerald-500 hover:bg-emerald-50/50 dark:hover:bg-slate-800/50 transition-all flex items-center justify-center gap-2 group">
-                <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 group-hover:bg-emerald-100 dark:group-hover:bg-emerald-900/30 flex items-center justify-center transition-colors">
+            <button onclick="addCategory()" class="w-full py-4 rounded-2xl border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:border-apple-500 hover:text-apple-600 dark:hover:border-apple-500 dark:hover:text-apple-500 hover:bg-apple-50/50 dark:hover:bg-slate-800/50 transition-all flex items-center justify-center gap-2 group">
+                <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 group-hover:bg-apple-100 dark:group-hover:bg-apple-900/30 flex items-center justify-center transition-colors">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                 </div>
                 <span class="font-medium text-lg">新建分类</span>
@@ -332,36 +584,57 @@ const HTML_CONTENT = `
         
     </main>
 
+    <!-- 页脚 -->
+    <footer class="w-full border-t border-slate-200/60 dark:border-slate-700/60 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <!-- 署名：Logo | Microsslinks -->
+                <a href="https://github.com/microsslinks/micross-nav" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                    <img src="https://images.dukaworks.us.kg/picgo/microsslink.png" alt="Microsslinks Logo" class="h-8 w-auto">
+                    <span class="text-slate-300 dark:text-slate-600">|</span>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-200">Microsslinks</span>
+                </a>
+                <div class="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400">
+                    <span class="hidden sm:inline">MicrossNav</span>
+                    <span class="hidden sm:inline text-slate-300 dark:text-slate-600">|</span>
+                    <a href="https://github.com/microsslinks/micross-nav" target="_blank" rel="noopener noreferrer" class="hover:text-apple-600 dark:hover:text-apple-400 transition-colors">GitHub</a>
+                    <span class="text-slate-300 dark:text-slate-600">|</span>
+                    <span>© 2026 Microsslinks</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
     <!-- 模态框：添加/编辑链接 -->
     <div id="dialog-overlay" class="fixed inset-0 z-[60] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 transition-opacity duration-300 overlay-hidden">
         <div id="dialog-box" class="bg-white dark:bg-[#1e293b] rounded-2xl shadow-2xl w-full max-w-md p-6 transform transition-all duration-300 border border-slate-100 dark:border-slate-700 dialog-scale-hidden">
             <h3 class="text-xl font-bold mb-5 text-slate-800 dark:text-slate-100 flex items-center gap-2">
-                <span class="w-1 h-6 bg-emerald-500 rounded-full"></span>
+                <span class="w-1 h-6 bg-apple-500 rounded-full"></span>
                 编辑信息
             </h3>
             <div class="space-y-4">
                 <div>
                     <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5 uppercase tracking-wider">名称 <span class="text-red-500">*</span></label>
-                    <input type="text" id="name-input" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-600 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 outline-none transition-all dark:text-white" placeholder="网站名称">
+                    <input type="text" id="name-input" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-600 focus:ring-2 focus:ring-apple-500/50 focus:border-apple-500 outline-none transition-all dark:text-white" placeholder="网站名称">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5 uppercase tracking-wider">地址 <span class="text-red-500">*</span></label>
-                    <input type="text" id="url-input" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-600 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 outline-none transition-all dark:text-white" placeholder="https://...">
+                    <input type="text" id="url-input" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-600 focus:ring-2 focus:ring-apple-500/50 focus:border-apple-500 outline-none transition-all dark:text-white" placeholder="https://...">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5 uppercase tracking-wider">描述</label>
-                    <input type="text" id="tips-input" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-600 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 outline-none transition-all dark:text-white" placeholder="简短的描述...">
+                    <input type="text" id="tips-input" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-600 focus:ring-2 focus:ring-apple-500/50 focus:border-apple-500 outline-none transition-all dark:text-white" placeholder="简短的描述...">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5 uppercase tracking-wider">图标 URL</label>
-                    <input type="text" id="icon-input" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-600 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 outline-none transition-all dark:text-white" placeholder="留空自动获取">
+                    <input type="text" id="icon-input" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-600 focus:ring-2 focus:ring-apple-500/50 focus:border-apple-500 outline-none transition-all dark:text-white" placeholder="留空自动获取">
                 </div>
                 
                 <!-- Custom Category Dropdown -->
                 <div class="relative z-20" id="category-select-wrapper">
                     <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5 uppercase tracking-wider">分类</label>
                     <input type="hidden" id="category-select-value">
-                    <button id="category-select-btn" class="w-full px-4 py-2.5 text-left rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-600 focus:ring-2 focus:ring-emerald-500/50 outline-none transition-all text-slate-700 dark:text-white flex items-center justify-between">
+                    <button id="category-select-btn" class="w-full px-4 py-2.5 text-left rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-600 focus:ring-2 focus:ring-apple-500/50 outline-none transition-all text-slate-700 dark:text-white flex items-center justify-between">
                         <span id="category-select-text">请选择分类</span>
                         <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                     </button>
@@ -372,13 +645,13 @@ const HTML_CONTENT = `
                 </div>
 
                 <div class="flex items-center gap-2 pt-2">
-                    <input type="checkbox" id="private-checkbox" class="w-5 h-5 text-emerald-500 rounded focus:ring-emerald-500 border-gray-300 bg-gray-100">
+                    <input type="checkbox" id="private-checkbox" class="w-5 h-5 text-apple-500 rounded focus:ring-apple-500 border-gray-300 bg-gray-100">
                     <label for="private-checkbox" class="text-sm text-slate-600 dark:text-slate-300 font-medium">设为私密链接 (仅登录可见)</label>
                 </div>
             </div>
             <div class="flex justify-end gap-3 mt-8">
                 <button id="dialog-cancel-btn" class="px-5 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-700 transition-colors">取消</button>
-                <button id="dialog-confirm-btn" class="px-5 py-2.5 rounded-xl text-sm font-medium text-white bg-emerald-500 hover:bg-emerald-600 shadow-lg shadow-emerald-500/25 transition-all hover:translate-y-[-1px]">确定</button>
+                <button id="dialog-confirm-btn" class="px-5 py-2.5 rounded-xl text-sm font-medium text-white bg-apple-500 hover:bg-apple-600 shadow-lg shadow-apple-500/25 transition-all hover:translate-y-[-1px]">确定</button>
             </div>
         </div>
     </div>
@@ -386,15 +659,15 @@ const HTML_CONTENT = `
     <!-- 密码弹窗 -->
     <div id="password-dialog-overlay" class="fixed inset-0 z-[70] bg-slate-900/70 backdrop-blur-md flex items-center justify-center p-4 transition-opacity duration-300 overlay-hidden">
         <div id="password-dialog-box" class="bg-white dark:bg-[#1e293b] rounded-2xl shadow-2xl p-8 w-full max-w-sm border border-slate-100 dark:border-slate-700 text-center transform transition-all duration-300 dialog-scale-hidden">
-            <div class="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-500">
+            <div class="w-16 h-16 bg-apple-100 dark:bg-apple-900/30 rounded-full flex items-center justify-center mx-auto mb-4 text-apple-500">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
             </div>
             <h3 class="text-xl font-bold mb-2 text-slate-800 dark:text-white">身份验证</h3>
             <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">请输入管理员密码以继续操作</p>
-            <input type="password" id="password-input" placeholder="访问密码" class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-600 focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none mb-6 dark:text-white text-center tracking-widest text-lg transition-all">
+            <input type="password" id="password-input" placeholder="访问密码" class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-600 focus:ring-2 focus:ring-apple-500 focus:border-transparent outline-none mb-6 dark:text-white text-center tracking-widest text-lg transition-all">
             <div class="flex gap-3">
                 <button id="password-cancel-btn" class="flex-1 py-2.5 rounded-xl text-slate-600 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600 font-medium transition-colors">取消</button>
-                <button id="password-confirm-btn" class="flex-1 py-2.5 rounded-xl text-white bg-emerald-500 hover:bg-emerald-600 shadow-lg shadow-emerald-500/25 font-medium transition-colors">确认登录</button>
+                <button id="password-confirm-btn" class="flex-1 py-2.5 rounded-xl text-white bg-apple-500 hover:bg-apple-600 shadow-lg shadow-apple-500/25 font-medium transition-colors">确认登录</button>
             </div>
         </div>
     </div>
@@ -405,7 +678,7 @@ const HTML_CONTENT = `
             <h3 id="custom-alert-title" class="text-lg font-bold mb-2 text-slate-800 dark:text-white">提示</h3>
             <p id="custom-alert-content" class="text-slate-600 dark:text-slate-300 mb-6 text-sm leading-relaxed"></p>
             <div class="flex justify-end">
-                <button id="custom-alert-confirm" class="px-5 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-sm font-medium transition-colors shadow-lg shadow-emerald-500/20">我知道了</button>
+                <button id="custom-alert-confirm" class="px-5 py-2 bg-apple-500 hover:bg-apple-600 text-white rounded-xl text-sm font-medium transition-colors shadow-lg shadow-apple-500/20">我知道了</button>
             </div>
         </div>
     </div>
@@ -417,7 +690,7 @@ const HTML_CONTENT = `
             <p id="custom-confirm-message" class="text-slate-600 dark:text-slate-300 mb-6 text-sm"></p>
             <div class="flex justify-end gap-3">
                 <button id="custom-confirm-cancel" class="px-4 py-2 text-sm text-slate-600 hover:bg-slate-100 rounded-xl dark:text-slate-400 dark:hover:bg-slate-700 transition-colors font-medium">取消</button>
-                <button id="custom-confirm-ok" class="px-4 py-2 text-sm text-white bg-emerald-500 hover:bg-emerald-600 rounded-xl shadow-lg shadow-emerald-500/20 transition-colors font-medium">确定</button>
+                <button id="custom-confirm-ok" class="px-4 py-2 text-sm text-white bg-apple-500 hover:bg-apple-600 rounded-xl shadow-lg shadow-apple-500/20 transition-colors font-medium">确定</button>
             </div>
         </div>
     </div>
@@ -426,10 +699,10 @@ const HTML_CONTENT = `
     <div id="category-dialog" class="fixed inset-0 z-[65] bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 transition-opacity duration-300 overlay-hidden">
         <div id="category-dialog-box" class="bg-white dark:bg-[#1e293b] rounded-2xl p-6 w-full max-w-sm shadow-2xl border border-slate-100 dark:border-slate-700 transform transition-all duration-300 dialog-scale-hidden">
             <h3 id="category-dialog-title" class="text-lg font-bold mb-4 text-slate-800 dark:text-white">分类名称</h3>
-            <input type="text" id="category-name-input" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-600 focus:ring-2 focus:ring-emerald-500 outline-none mb-6 dark:text-white transition-all" placeholder="输入分类名称">
+            <input type="text" id="category-name-input" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-600 focus:ring-2 focus:ring-apple-500 outline-none mb-6 dark:text-white transition-all" placeholder="输入分类名称">
             <div class="flex justify-end gap-3">
                 <button id="category-cancel-btn" class="px-4 py-2 text-sm rounded-xl text-slate-600 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 font-medium">取消</button>
-                <button id="category-confirm-btn" class="px-4 py-2 text-sm rounded-xl text-white bg-emerald-500 hover:bg-emerald-600 shadow-md font-medium">确定</button>
+                <button id="category-confirm-btn" class="px-4 py-2 text-sm rounded-xl text-white bg-apple-500 hover:bg-apple-600 shadow-md font-medium">确定</button>
             </div>
         </div>
     </div>
@@ -438,9 +711,9 @@ const HTML_CONTENT = `
     <div id="loading-mask" class="fixed inset-0 z-[100] bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm hidden flex flex-col items-center justify-center transition-opacity">
         <div class="relative w-16 h-16">
             <div class="absolute inset-0 border-4 border-slate-200 dark:border-slate-700 rounded-full"></div>
-            <div class="absolute inset-0 border-4 border-emerald-500 rounded-full border-t-transparent animate-spin"></div>
+            <div class="absolute inset-0 border-4 border-apple-500 rounded-full border-t-transparent animate-spin"></div>
         </div>
-        <p class="mt-4 text-emerald-600 dark:text-emerald-400 font-medium animate-pulse tracking-wide">加载中...</p>
+        <p class="mt-4 text-apple-600 dark:text-apple-400 font-medium animate-pulse tracking-wide">加载中...</p>
     </div>
 
     <!-- Tooltip Container -->
@@ -511,7 +784,7 @@ const HTML_CONTENT = `
             const icon = searchEngineIcons[key];
             
             const btn = document.createElement('button');
-            btn.className = "w-full text-left px-3 py-2.5 text-sm text-slate-700 dark:text-slate-200 hover:bg-emerald-50 dark:hover:bg-slate-700 hover:text-emerald-600 transition-colors flex items-center gap-3";
+            btn.className = "w-full text-left px-3 py-2.5 text-sm text-slate-700 dark:text-slate-200 hover:bg-apple-50 dark:hover:bg-slate-700 hover:text-apple-600 transition-colors flex items-center gap-3";
             btn.onclick = () => selectSearchEngine(key, label);
             
             btn.innerHTML = \`\${icon}<span>\${label}</span>\`;
@@ -536,6 +809,7 @@ const HTML_CONTENT = `
     document.addEventListener('DOMContentLoaded', async () => {
         initializeUIComponents();
         renderSearchEngineMenu();
+        setupCategoryStrip();
         await checkLoginStatusAndLoad();
     });
 
@@ -894,8 +1168,8 @@ const HTML_CONTENT = `
             titleContainer.className = 'flex items-center gap-3 mb-5 pb-2 border-b border-slate-200/60 dark:border-slate-700/60';
             
             const title = document.createElement('h2');
-            title.className = 'text-lg font-bold text-slate-700 dark:text-slate-100 flex items-center gap-2';
-            title.innerHTML = \`<span class="w-1.5 h-5 bg-emerald-500 rounded-full inline-block shadow-sm"></span> \${category}\`;
+            title.className = 'text-lg font-bold text-slate-700 dark:text-slate-50 flex items-center gap-2';
+            title.innerHTML = \`<span class="w-1.5 h-5 bg-apple-500 rounded-full inline-block shadow-sm"></span> \${category}\`;
             titleContainer.appendChild(title);
 
             // 编辑模式下的标题栏操作
@@ -913,10 +1187,10 @@ const HTML_CONTENT = `
                     <div class="w-px h-4 bg-slate-300 dark:bg-slate-600 mx-0.5"></div>
 
                     <!-- 排序组 -->
-                    <button class="\${btnBase} text-slate-500 hover:text-emerald-600 hover:bg-emerald-100 dark:text-slate-400 dark:hover:bg-emerald-900/30 dark:hover:text-emerald-400 has-tooltip" data-tooltip="上移" onclick="moveCategory('\${category}', -1)">
+                    <button class="\${btnBase} text-slate-500 hover:text-apple-600 hover:bg-apple-100 dark:text-slate-400 dark:hover:bg-apple-900/30 dark:hover:text-apple-400 has-tooltip" data-tooltip="上移" onclick="moveCategory('\${category}', -1)">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
                     </button>
-                    <button class="\${btnBase} text-slate-500 hover:text-emerald-600 hover:bg-emerald-100 dark:text-slate-400 dark:hover:bg-emerald-900/30 dark:hover:text-emerald-400 has-tooltip" data-tooltip="下移" onclick="moveCategory('\${category}', 1)">
+                    <button class="\${btnBase} text-slate-500 hover:text-apple-600 hover:bg-apple-100 dark:text-slate-400 dark:hover:bg-apple-900/30 dark:hover:text-apple-400 has-tooltip" data-tooltip="下移" onclick="moveCategory('\${category}', 1)">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                     </button>
                     <button class="\${btnBase} text-slate-500 hover:text-amber-600 hover:bg-amber-100 dark:text-slate-400 dark:hover:bg-amber-900/30 dark:hover:text-amber-400 has-tooltip" data-tooltip="置顶" onclick="pinCategory('\${category}')">
@@ -967,12 +1241,12 @@ const HTML_CONTENT = `
                 const addCardPlaceholder = document.createElement('div');
                 const sizeClasses = isAppLayout 
                     ? 'w-16 h-16 rounded-[1.2rem] mx-auto' 
-                    : 'min-h-[100px] p-4 rounded-2xl w-full';
+                    : 'p-4 rounded-2xl w-full';
                 
-                addCardPlaceholder.className = \`add-card-placeholder group flex flex-col h-full w-full \${sizeClasses} rounded-2xl border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-emerald-500 dark:hover:border-emerald-500 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/10 transition-all cursor-pointer flex items-center justify-center\`;
+                addCardPlaceholder.className = \`add-card-placeholder group flex flex-col h-full w-full \${sizeClasses} rounded-2xl border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-apple-500 dark:hover:border-apple-500 hover:bg-apple-50/50 dark:hover:bg-apple-900/10 transition-all cursor-pointer flex items-center justify-center\`;
                 addCardPlaceholder.innerHTML = \`
-                    <div class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 group-hover:bg-emerald-100 dark:group-hover:bg-emerald-900/30 flex items-center justify-center transition-colors pointer-events-none">
-                        <svg class="w-6 h-6 text-slate-400 group-hover:text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    <div class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 group-hover:bg-apple-100 dark:group-hover:bg-apple-900/30 flex items-center justify-center transition-colors pointer-events-none">
+                        <svg class="w-6 h-6 text-slate-400 group-hover:text-apple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                     </div>
                 \`;
                 
@@ -990,6 +1264,14 @@ const HTML_CONTENT = `
                      document.getElementById('category-select-text').textContent = category;
                 };
                 cardContainer.appendChild(addCardPlaceholder);
+
+                // 图文卡片模式：让“+”占位卡与真实卡片等高（卡片改版后变紧凑，
+                // 若还用旧的固定 min-h-[100px] 会明显比其他卡片大一圈）
+                if (!isAppLayout) {
+                    const refCard = cardContainer.querySelector('.card');
+                    const targetH = refCard ? refCard.getBoundingClientRect().height : 80;
+                    addCardPlaceholder.style.minHeight = targetH + 'px';
+                }
             }
         });
 
@@ -1023,12 +1305,12 @@ const HTML_CONTENT = `
             (!categories[c].isHidden || isEditMode || isLoggedIn)
         );
 
-        if (visibleCategories.length === 0) return;
+        if (visibleCategories.length === 0) { refreshCategoryStripSoon(); return; }
 
         visibleCategories.forEach(cat => {
             const btn = document.createElement('button');
-            btn.className = 'category-button whitespace-nowrap px-4 py-1.5 text-xs font-medium rounded-xl border border-slate-300 dark:border-slate-600 transition-all active:scale-95 shadow-sm scroll-snap-align-start';
-            btn.classList.add('bg-slate-100', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300', 'hover:bg-emerald-50', 'hover:text-emerald-600', 'dark:hover:bg-slate-700', 'hover:border-emerald-300', 'dark:hover:border-emerald-500/50');
+            // 悬浮毛玻璃胶囊（背景/描边/悬停/高亮由 .cat-chip 自定义样式驱动）
+            btn.className = 'category-button cat-chip whitespace-nowrap px-4 py-1.5 text-xs font-medium rounded-full transition-all duration-300 active:scale-95';
             
             btn.textContent = cat;
             btn.dataset.target = cat;
@@ -1037,6 +1319,57 @@ const HTML_CONTENT = `
             };
             container.appendChild(btn);
         });
+
+        refreshCategoryStripSoon();
+    }
+
+    /* 渲染完成后多阶段复测：Tailwind CDN / 字体都是异步生效，
+       首次测量过早会误判“无溢出”导致箭头不出现 */
+    function refreshCategoryStripSoon() {
+        updateCategoryStrip();
+        requestAnimationFrame(() => requestAnimationFrame(updateCategoryStrip));
+        [120, 500, 1200].forEach(t => setTimeout(updateCategoryStrip, t));
+    }
+
+    /* 分类栏横向滚动：根据溢出情况显示/隐藏箭头与边缘渐隐 */
+    function updateCategoryStrip() {
+        const bar = document.getElementById('category-buttons-container');
+        if (!bar) return;
+        const prevBtn = document.getElementById('cat-scroll-prev');
+        const nextBtn = document.getElementById('cat-scroll-next');
+
+        const maxLeft = bar.scrollWidth - bar.clientWidth;
+        const canLeft = bar.scrollLeft > 2;
+        const canRight = maxLeft > 2 && bar.scrollLeft < maxLeft - 2;
+
+        let mask = '';
+        if (canLeft && canRight) mask = 'linear-gradient(to right, transparent 0, #000 28px, #000 calc(100% - 28px), transparent 100%)';
+        else if (canLeft) mask = 'linear-gradient(to right, transparent 0, #000 28px)';
+        else if (canRight) mask = 'linear-gradient(to right, #000 calc(100% - 28px), transparent 100%)';
+        bar.style.webkitMaskImage = mask;
+        bar.style.maskImage = mask;
+
+        if (prevBtn) prevBtn.classList.toggle('on', canLeft);
+        if (nextBtn) nextBtn.classList.toggle('on', canRight);
+    }
+
+    function setupCategoryStrip() {
+        const bar = document.getElementById('category-buttons-container');
+        if (!bar) return;
+        const prevBtn = document.getElementById('cat-scroll-prev');
+        const nextBtn = document.getElementById('cat-scroll-next');
+        const step = () => Math.max(240, bar.clientWidth * 0.6);
+        if (prevBtn) prevBtn.addEventListener('click', () => bar.scrollBy({ left: -step(), behavior: 'smooth' }));
+        if (nextBtn) nextBtn.addEventListener('click', () => bar.scrollBy({ left: step(), behavior: 'smooth' }));
+        bar.addEventListener('scroll', updateCategoryStrip, { passive: true });
+        window.addEventListener('resize', updateCategoryStrip);
+
+        // 字体加载完毕 / 页面完全加载后再复测一次，避免早期误判
+        const recheck = () => updateCategoryStrip();
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(recheck);
+        if (document.readyState === 'complete') recheck();
+        else window.addEventListener('load', recheck);
+        refreshCategoryStripSoon();
     }
 
     function scrollToCategory(catId) {
@@ -1073,13 +1406,10 @@ const HTML_CONTENT = `
     function highlightButton(id) {
         const buttons = document.querySelectorAll('.category-button');
         buttons.forEach(btn => {
-            if (btn.dataset.target === id) {
-                btn.classList.remove('bg-slate-100', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300', 'hover:bg-emerald-50', 'hover:text-emerald-600', 'dark:hover:bg-slate-700');
-                btn.classList.add('bg-emerald-500', 'text-white', 'shadow-md', 'dark:bg-emerald-600');
+            const isActive = btn.dataset.target === id;
+            btn.classList.toggle('active', isActive);
+            if (isActive) {
                 btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-            } else {
-                btn.classList.remove('bg-emerald-500', 'text-white', 'shadow-md', 'dark:bg-emerald-600');
-                btn.classList.add('bg-slate-100', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300', 'hover:bg-emerald-50', 'hover:text-emerald-600', 'dark:hover:bg-slate-700');
             }
         });
     }
@@ -1161,10 +1491,11 @@ const HTML_CONTENT = `
         
         let cardBaseClass = isAppLayout 
             ? 'flex flex-col items-center justify-start py-1 gap-1.5 hover:z-10' 
-            : 'flex flex-col p-4 bg-white/90 dark:bg-[#1e293b]/60 backdrop-blur-md supports-[backdrop-filter]:bg-white/80 border border-gray-200 dark:border-slate-700/50 hover:border-emerald-500/50 dark:hover:border-emerald-400/50 shadow-sm hover:shadow-[0_8px_20px_-6px_rgba(0,0,0,0.1)] dark:shadow-none dark:hover:shadow-[0_8px_20px_-6px_rgba(0,0,0,0.4)] hover:-translate-y-1.5';
+            : 'flex flex-col p-4 app-card hover:-translate-y-1.5';
             
         if (link.isPrivate && !isAppLayout) {
-            cardBaseClass += ' ring-1 ring-amber-400/40 bg-amber-50/80 dark:bg-amber-900/10 !border-amber-200 dark:!border-amber-700/50';
+            // 私密卡片：冷紫标记，融入蓝紫主题
+            cardBaseClass += ' ring-1 ring-violet-400/50 bg-violet-50/60 dark:bg-violet-900/10 !border-violet-200 dark:!border-violet-500/40';
         }
 
         card.className = \`group relative h-full w-full rounded-2xl transition-all duration-300 ease-[cubic-bezier(0.25,0.8,0.25,1)] cursor-pointer select-none \${cardBaseClass}\`;
@@ -1178,10 +1509,11 @@ const HTML_CONTENT = `
         card.dataset.isPrivate = link.isPrivate;
         card.setAttribute('data-url', link.url);
 
-        const header = document.createElement('div');
-        header.className = isAppLayout 
+        // 卡片主体：图文卡片 = 左侧大图标 + 右侧文字区（名称/说明两行）
+        const body = document.createElement('div');
+        body.className = isAppLayout 
             ? 'flex flex-col items-center justify-center w-full relative' 
-            : 'flex items-center gap-3 mb-2.5 w-full';
+            : 'flex items-center gap-3 w-full min-w-0';
         
         const icon = document.createElement('img');
         icon.setAttribute('loading', 'lazy'); 
@@ -1190,13 +1522,16 @@ const HTML_CONTENT = `
         let iconClass = '';
         if (isAppLayout) {
              // APP 风格：大图标、白底、大圆角、阴影
-             iconClass = 'w-14 h-14 sm:w-16 sm:h-16 rounded-[1.2rem] object-contain bg-white dark:bg-slate-600 p-2 shadow-md hover:shadow-lg transition-transform duration-300 group-hover:scale-105 group-active:scale-95 z-10';
+             iconClass = 'w-14 h-14 sm:w-16 sm:h-16 rounded-[1.2rem] object-contain bg-white dark:bg-white/5 dark:ring-1 dark:ring-white/10 p-2 shadow-md dark:shadow-none hover:shadow-lg transition-transform duration-300 group-hover:scale-105 group-active:scale-95 z-10';
              if (link.isPrivate) {
-                 iconClass += ' ring-2 ring-amber-400';
+                 iconClass += ' ring-2 ring-violet-400/90 shadow-violet-300/50 dark:shadow-violet-900/60';
              }
         } else {
-             // 列表风格：小图标、淡底
-             iconClass = 'w-9 h-9 rounded-lg object-contain bg-slate-100 dark:bg-slate-900 p-1 border border-slate-200 dark:border-slate-700 transition-transform group-hover:scale-105 pointer-events-none';
+             // 图文卡片：图标放大放左侧
+             iconClass = 'w-12 h-12 shrink-0 rounded-xl object-contain bg-white/90 dark:bg-white/5 p-1 ring-1 ring-slate-200/70 dark:ring-white/10 shadow-sm dark:shadow-none transition-transform duration-300 group-hover:scale-105 pointer-events-none';
+             if (link.isPrivate) {
+                 iconClass += ' ring-violet-400/70';
+             }
         }
         icon.className = iconClass;
 
@@ -1205,29 +1540,35 @@ const HTML_CONTENT = `
              this.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cline x1='12' y='8' x2='12' y='12'/%3E%3Cline x1='12' y='16' x2='12.01' y='16'/%3E%3C/svg%3E";
         };
         
-        const title = document.createElement('div');
-        const titleAlign = isAppLayout 
-            ? 'text-center text-xs sm:text-sm font-medium mt-1 w-[120%] truncate px-1 text-slate-700 dark:text-slate-200 drop-shadow-sm' 
-            : 'font-semibold text-sm flex-1 truncate text-slate-700 dark:text-slate-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors pointer-events-none';
-        
-        title.className = \`card-title pointer-events-none \${titleAlign}\`;
-        title.textContent = link.name;
-        
-        header.appendChild(icon);
-        header.appendChild(title);
-        card.appendChild(header);
+        body.appendChild(icon);
 
-        if (!isAppLayout) {
+        if (isAppLayout) {
+            // APP 视图：图标在上、名称在下（保持原样）
+            const title = document.createElement('div');
+            title.className = 'card-title pointer-events-none text-center text-xs sm:text-sm font-medium mt-1 w-[120%] truncate px-1 text-slate-700 dark:text-slate-50 drop-shadow-sm';
+            title.textContent = link.name;
+            body.appendChild(title);
+        } else {
+            // 图文卡片右侧文字区：第一行名称、第二行说明
+            const textCol = document.createElement('div');
+            textCol.className = 'min-w-0 flex-1';
+            const title = document.createElement('div');
+            title.className = 'card-title pointer-events-none font-semibold text-sm truncate text-slate-700 dark:text-slate-50 group-hover:text-apple-600 dark:group-hover:text-apple-400 transition-colors';
+            title.textContent = link.name;
             const desc = document.createElement('div');
-            desc.className = 'text-xs text-slate-500 dark:text-slate-400 line-clamp-2 min-h-[1.25rem] card-tip leading-relaxed pointer-events-none w-full';
+            desc.className = 'text-xs text-slate-500 dark:text-slate-300 line-clamp-2 min-h-[1.25rem] leading-relaxed mt-1 pointer-events-none';
             desc.textContent = link.tips || '';
-            card.appendChild(desc);
+            textCol.appendChild(title);
+            textCol.appendChild(desc);
+            body.appendChild(textCol);
         }
+
+        card.appendChild(body);
 
         if (link.isPrivate && !isAppLayout) {
             const badge = document.createElement('div');
             badge.className = 'absolute top-0 right-0 w-8 h-8 pointer-events-none overflow-hidden rounded-tr-2xl';
-            badge.innerHTML = '<div class="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 rotate-45 w-8 h-8 bg-amber-400"></div>';
+            badge.innerHTML = '<div class="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 rotate-45 w-8 h-8 bg-gradient-to-br from-violet-500 to-fuchsia-500"></div>';
             card.appendChild(badge);
         }
 
@@ -1239,7 +1580,7 @@ const HTML_CONTENT = `
 
             const menuBtn = document.createElement('button');
             const btnStyle = isAppLayout
-                ? 'w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 shadow-sm hover:bg-emerald-500 hover:text-white'
+                ? 'w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 shadow-sm hover:bg-apple-500 hover:text-white'
                 : 'w-7 h-7 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100/80 backdrop-blur-sm';
             
             menuBtn.className = \`\${btnStyle} flex items-center justify-center transition-all duration-200\`;
@@ -1249,7 +1590,7 @@ const HTML_CONTENT = `
             dropdown.className = 'hidden absolute right-0 top-6 w-28 bg-white dark:bg-[#1e293b] rounded-xl shadow-xl ring-1 ring-black/5 dark:ring-white/10 overflow-hidden transform origin-top-right transition-all z-50 flex flex-col p-1 card-menu-dropdown';
             
             dropdown.innerHTML = \`
-                <button class="menu-edit w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-200 hover:bg-emerald-50 dark:hover:bg-slate-700/50 hover:text-emerald-600 transition-colors flex items-center gap-2">
+                <button class="menu-edit w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-200 hover:bg-apple-50 dark:hover:bg-slate-700/50 hover:text-apple-600 transition-colors flex items-center gap-2">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                     编辑
                 </button>
@@ -1296,7 +1637,8 @@ const HTML_CONTENT = `
         card.addEventListener('dragend', dragEnd);
         card.addEventListener('drop', drop);
         
-        if (!isEditMode && link.tips) {
+        // 提示浮层仅在 APP 模式有用：图文卡片模式描述已内联显示，再弹提示纯属多余
+        if (isAppLayout && !isEditMode && link.tips) {
             card.classList.add('has-tooltip');
             card.setAttribute('data-tooltip', link.tips);
         }
@@ -1320,7 +1662,7 @@ const HTML_CONTENT = `
         menu.innerHTML = '';
         Object.keys(categories).forEach(cat => {
             const item = document.createElement('div');
-            item.className = 'px-4 py-2.5 text-sm text-slate-700 dark:text-slate-200 hover:bg-emerald-50 dark:hover:bg-slate-700 cursor-pointer transition-colors';
+            item.className = 'px-4 py-2.5 text-sm text-slate-700 dark:text-slate-200 hover:bg-apple-50 dark:hover:bg-slate-700 cursor-pointer transition-colors';
             item.textContent = cat;
             item.onclick = () => {
                 document.getElementById('category-select-value').value = cat;
@@ -1533,7 +1875,7 @@ const HTML_CONTENT = `
 
             // 占位符样式
             mobilePlaceholder.style.opacity = '0.3';
-            mobilePlaceholder.classList.add('border-dashed', 'border-2', 'border-emerald-400');
+            mobilePlaceholder.classList.add('border-dashed', 'border-2', 'border-apple-400');
 
             if (navigator.vibrate) navigator.vibrate(50);
             
@@ -1705,7 +2047,7 @@ const HTML_CONTENT = `
                         if (mobileClone) mobileClone.remove();
                         if (mobilePlaceholder) {
                              mobilePlaceholder.style.opacity = '';
-                             mobilePlaceholder.classList.remove('border-dashed', 'border-2', 'border-emerald-400');
+                             mobilePlaceholder.classList.remove('border-dashed', 'border-2', 'border-apple-400');
                         }
                         
                         // 保存排序
